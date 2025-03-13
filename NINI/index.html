@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home | The [Last Name]s</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@400;500&display=swap" rel="stylesheet">
   <style>
     /* Basic Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Raleway', sans-serif; color: #333; }
+    body { font-family: 'Raleway', sans-serif; color: #333; line-height: 1.6; }
 
     /* Navigation Bar */
     nav {
@@ -17,8 +18,9 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     nav .title {
       font-family: 'Playfair Display', serif;
@@ -46,57 +48,36 @@
     }
     nav .dropdown-content a:hover { background: #FFD700; /* Soft gold */ }
 
-    /* Default hero section styling */
-.hero {
-  height: 100vh;
-  background: url('images/hero_home.jpg') no-repeat center center/cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-}
-
-/* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
-  .hero {
-    height: 50vh;
-    background-size: cover;
-  }
-  
-  .hero h1 {
-    font-size: 32px;
-  }
-  
-  .hero button {
-    font-size: 16px;
-    padding: 8px 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero {
-    height: 40vh;
-    background-size: contain;
-  }
-  
-  .hero h1 {
-    font-size: 24px;
-  }
-  
-  .hero button {
-    font-size: 14px;
-    padding: 6px 12px;
-  }
-}
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      background: url('images/hero_home.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+    }
     .hero h1 {
       font-family: 'Playfair Display', serif;
       font-size: 48px;
       margin-bottom: 20px;
       animation: fadeIn 2s ease-in-out;
+      position: relative;
+      z-index: 1;
     }
     .hero button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       font-size: 18px;
       border: 2px solid white;
       background: transparent;
@@ -104,34 +85,55 @@
       cursor: pointer;
       transition: background 0.3s, color 0.3s;
       animation: fadeIn 2.5s ease-in-out;
+      position: relative;
+      z-index: 1;
+      border-radius: 30px;
+      font-weight: 500;
     }
     .hero button:hover {
       background: white;
       color: #0A2463; /* Navy blue */
     }
 
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; }
+      .hero button { font-size: 16px; padding: 10px 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 28px; }
+      .hero button { font-size: 14px; padding: 8px 16px; }
+    }
+
     /* Below the Fold */
     .featured {
-      padding: 40px 20px;
+      padding: 60px 20px;
       text-align: center;
       background: #FFC0CB; /* Blush pink */
     }
     .featured h2 {
       font-family: 'Playfair Display', serif;
       font-size: 32px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       color: #0A2463; /* Navy blue */
     }
     .featured-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .featured-item {
       position: relative;
       overflow: hidden;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .featured-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
     .featured-item img {
       width: 100%;
@@ -173,7 +175,7 @@
   <!-- Hero Section -->
   <section class="hero">
     <div>
-      <h1></h1>
+      <h1>Welcome to Our Story</h1>
       <button onclick="location.href='gally.html'">Explore Our Story</button>
     </div>
   </section>
@@ -196,7 +198,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>Made with ❤️ by Nini</p>
+    <p>Made with ❤ by Nini</p>
   </footer>
 </body>
 </html>
