@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | The [Last Name]s</title>
+  <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Raleway', sans-serif; color: #333; cursor: url('heart-cursor.png'), auto; }
+
+    /* Navigation Bar */
+    nav {
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 1000;
+    }
+    nav .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: bold;
+      color: #FF4081; /* updated vibrant color */
+    }
+    nav .dropdown { position: relative; }
+    nav .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    nav .dropdown:hover .dropdown-content { display: block; }
+    nav .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #2C3E50;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    nav .dropdown-content a:hover { background: #E74C3C; /* Sleek red */ }
+
+    /* Hero Section */
+    .hero {
+      height: 60vh;
+      background: url('images/love.jpeg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      animation: fadeIn 2s ease-in-out;
+      position: relative;
+      z-index: 1;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      color: transparent; /* updated for gradient text */
+      background: linear-gradient(45deg, #001f3f, #003366); /* simple navy blue gradient */
+      -webkit-background-clip: text;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay for better text visibility */
+    }
+
+    /* Gallery Section */
+    .gallery {
+      padding: 40px 20px;
+      background: #ECF0F1; /* Light gray */
+    }
+    .gallery h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      text-align: center;
+      color: #2C3E50; /* Sleek dark blue */
+      margin-bottom: 20px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 columns per row */
+      gap: 20px;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.3s;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    .gallery-item::after {
+      content: attr(data-caption);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover::after {
+      opacity: 1;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    /* Slideshow */
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .slideshow img {
+      max-width: 90%;
+      max-height: 70%;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow img.active {
+      opacity: 1;
+    }
+    .slideshow-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .slideshow-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 5px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slideshow-caption.active {
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      padding: 20px;
+      text-align: center;
+      background: #2C3E50; /* Sleek dark blue */
+      color: white;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="title">Nini</div>
+    <div class="dropdown">
+      <span>Menu</span>
+      <div class="dropdown-content">
+        <a href="index.html">Home</a>
+        <a href="timeline.html">Timeline</a>
+        <a href="gally.html">Gallery</a>
+        <a href="our_story.html">Our Story</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Our Memories in Frames</h1>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery">
+    <h2>Gallery</h2>
+    <div class="gallery-grid">
+      <!-- Repeat this block 24 times with your image link -->
+      <div class="gallery-item" data-caption="How it started">
+        <img src="images/vd.jpg" alt="Memory 1">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/vdn.jpg" alt="Memory 2">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/vdn1.jpg" alt="Memory 3">
+      </div>
+      <!-- New image slot inserted -->
+      <div class="gallery-item" data-caption="April 12, You came to see me.I was soo exited and felt positive about our new relationship">
+        <img src="images/s1.jpg" alt="New Memory">
+      </div>
+      <div class="gallery-item" data-caption="Long distance planning for the wedding with the time zones was hard, but we made it with long calls,being positive and lots of reassurance.">
+        <img src="images/s2.jpg" alt="Memory 4">
+      </div>
+      <div class="gallery-item" data-caption="The day was approaching ,met with lots of stress and planning">
+        <img src="images/s3.jpg" alt="Memory 5">
+      </div>
+      <div class="gallery-item" data-caption="You arrived with your family in Nairobi">
+        <img src="images/s4.jpg" alt="Memory 6">
+      </div>
+      <div class="gallery-item" data-caption="We met ,days away from our big day,full of nerves">
+        <img src="images/s5.jpg" alt="Memory 7">
+      </div>
+      <div class="gallery-item" data-caption="23 November 2024,11:20am at our Nikkah">
+        <img src="images/s6.jpg" alt="Memory 8">
+      </div>
+      <div class="gallery-item" data-caption="We did it!!">
+        <img src="images/s7.jpg" alt="Memory 9">
+      </div>
+      <div class="gallery-item" data-caption="The day was perfect">
+        <img src="images/s8.jpg" alt="Memory 10">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/s9.jpg" alt="Memory 11">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/s10.jpg" alt="Memory 12">
+      </div>
+      <div class="gallery-item" data-caption="Got the perfect ring">
+        <img src="images/s11.jpg" alt="Memory 13">
+      </div>
+      <div class="gallery-item" data-caption="Had an amazing Honeymoon">
+        <img src="images/s12.jpg" alt="Memory 14">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/s13.jpg" alt="Memory 15">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/s14.jpg" alt="Memory 16">
+      </div>
+      <div class="gallery-item" data-caption="">
+        <img src="images/s15.jpg" alt="Memory 16">
+      </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <span class="lightbox-nav lightbox-prev">&#10094;</span>
+    <span class="lightbox-nav lightbox-next">&#10095;</span>
+    <img src="" alt="Lightbox Image">
+  </div>
+
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <span class="slideshow-close">&times;</span>
+    <img src="" alt="Slideshow Image">
+    <div class="slideshow-caption"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made with ❤️ by Nuno</p>
+  </footer>
+
+  <!-- Background Music -->
+  <audio id="background-music" autoplay loop>
+    <source src="https://github.com/MadLad-prime/Nini-Demo/raw/main/NINI/song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // Lightbox functionality
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    const lightboxPrev = document.querySelector('.lightbox-prev');
+    const lightboxNext = document.querySelector('.lightbox-next');
+
+    let currentIndex = 0;
+
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        currentIndex = index;
+        updateLightboxImage();
+        lightbox.style.display = 'flex';
+      });
+    });
+
+    lightboxClose.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+
+    lightboxPrev.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      updateLightboxImage();
+    });
+
+    lightboxNext.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      updateLightboxImage();
+    });
+
+    function updateLightboxImage() {
+      const imgSrc = galleryItems[currentIndex].querySelector('img').src;
+      lightboxImg.src = imgSrc;
+    }
+
+    // Slideshow functionality
+    const slideshow = document.querySelector('.slideshow');
+    const slideshowImg = slideshow.querySelector('img');
+    const slideshowCaption = slideshow.querySelector('.slideshow-caption');
+    const slideshowClose = document.querySelector('.slideshow-close');
+    let slideshowIndex = 0;
+
+    function startSlideshow() {
+      slideshow.classList.add('active');
+      showNextSlide();
+    }
+
+    function showNextSlide() {
+      if (slideshowIndex >= galleryItems.length) {
+        slideshow.classList.remove('active');
+        return;
+      }
+
+      const imgSrc = galleryItems[slideshowIndex].querySelector('img').src;
+      const caption = galleryItems[slideshowIndex].getAttribute('data-caption');
+
+      slideshowImg.src = imgSrc;
+      slideshowCaption.textContent = caption;
+
+      slideshowImg.classList.add('active');
+      slideshowCaption.classList.add('active');
+
+      setTimeout(() => {
+        slideshowImg.classList.remove('active');
+        slideshowCaption.classList.remove('active');
+        slideshowIndex++;
+        showNextSlide();
+      }, 3000); // 3 seconds per slide
+    }
+
+    slideshowClose.addEventListener('click', () => {
+      slideshow.classList.remove('active');
+    });
+
+    // Start slideshow on page load
+    window.addEventListener('load', startSlideshow);
+
+    // Background music play/pause toggle
+    const music = document.getElementById('background-music');
+    document.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+      }
+    });
+  </script>
+</body>
+</html>
