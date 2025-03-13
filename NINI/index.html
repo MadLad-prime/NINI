@@ -46,16 +46,49 @@
     }
     nav .dropdown-content a:hover { background: #FFD700; /* Soft gold */ }
 
-    /* Hero Section */
-    .hero {
-      height: 100vh;
-      background: url('images/hero_home.jpg') no-repeat center center/cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-    }
+    /* Default hero section styling */
+.hero {
+  height: 100vh;
+  background: url('images/hero_home.jpg') no-repeat center center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .hero {
+    height: 50vh;
+    background-size: cover;
+  }
+  
+  .hero h1 {
+    font-size: 32px;
+  }
+  
+  .hero button {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 40vh;
+    background-size: contain;
+  }
+  
+  .hero h1 {
+    font-size: 24px;
+  }
+  
+  .hero button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
     .hero h1 {
       font-family: 'Playfair Display', serif;
       font-size: 48px;
