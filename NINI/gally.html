@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery | Sharmake Ibrahib</title>
+  <title>Gallery | The [Last Name]s</title>
   <style>
     /* Basic Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,7 +24,7 @@
       font-family: 'Playfair Display', serif;
       font-size: 24px;
       font-weight: bold;
-      color: #FF4081; /* updated vibrant color */
+      color: #2C3E50; /* Sleek dark blue */
     }
     nav .dropdown { position: relative; }
     nav .dropdown-content {
@@ -49,7 +49,7 @@
     /* Hero Section */
     .hero {
       height: 60vh;
-      background: url('images/love.jpeg') no-repeat center center/cover;
+      background: url('images/cc.jpeg') no-repeat center center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -65,9 +65,6 @@
       position: relative;
       z-index: 1;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      color: transparent; /* updated for gradient text */
-      background: linear-gradient(45deg, #001f3f, #003366); /* simple navy blue gradient */
-      -webkit-background-clip: text;
     }
     .hero::before {
       content: '';
@@ -265,10 +262,13 @@
       <div class="gallery-item" data-caption="How it started">
         <img src="images/vd.jpg" alt="Memory 1">
       </div>
-       <div class="gallery-item" data-caption="">
+      <div class="gallery-item" data-caption="">
+        <img src="images/vdn.jpg" alt="Memory 2">
+      </div>
+      <div class="gallery-item" data-caption="">
         <img src="images/vdn1.jpg" alt="Memory 3">
       </div>
-      <!-- New image slot inserted -->
+      <!-- Add 21 more items -->
       <div class="gallery-item" data-caption="April 12, You came to see me.I was soo exited and felt positive about our new relationship">
         <img src="images/s1.jpg" alt="New Memory">
       </div>
@@ -314,6 +314,9 @@
       <div class="gallery-item" data-caption="">
         <img src="images/s15.jpg" alt="Memory 16">
       </div>
+    </div>
+  </section>
+    </div>
   </section>
 
   <!-- Lightbox -->
@@ -333,62 +336,108 @@
 
   <!-- Footer -->
   <footer>
-    <p>Made with ❤️ by Nini</p>
+    <p>Made with ❤️ by Nuno</p>
   </footer>
 
-  <!-- Audio Narration -->
-  <audio id="narration" autoplay>
+   <!-- Background Music (Fixed) -->
+   <audio id="background-music" autoplay loop>
     <source src="song2_nn.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-<script>
-  // Lightbox functionality
-  const lightbox = document.querySelector('.lightbox');
-  const lightboxImg = lightbox.querySelector('img');
-  const galleryItems = document.querySelectorAll('.gallery-item');
-  const lightboxClose = document.querySelector('.lightbox-close');
-  const lightboxPrev = document.querySelector('.lightbox-prev');
-  const lightboxNext = document.querySelector('.lightbox-next');
+  <script>
+    // Lightbox functionality
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    const lightboxPrev = document.querySelector('.lightbox-prev');
+    const lightboxNext = document.querySelector('.lightbox-next');
 
-  let currentIndex = 0;
+    let currentIndex = 0;
 
-  galleryItems.forEach((item, index) => {
-    item.addEventListener('click', () => {
-      currentIndex = index;
-      updateLightboxImage();
-      lightbox.style.display = 'flex';
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        currentIndex = index;
+        updateLightboxImage();
+        lightbox.style.display = 'flex';
+      });
     });
-  });
 
-  lightboxClose.addEventListener('click', () => {
-    lightbox.style.display = 'none';
-  });
+    lightboxClose.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
 
-  lightboxPrev.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-    updateLightboxImage();
-  });
+    lightboxPrev.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      updateLightboxImage();
+    });
 
-  lightboxNext.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % galleryItems.length;
-    updateLightboxImage();
-  });
+    lightboxNext.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      updateLightboxImage();
+    });
 
-  function updateLightboxImage() {
-    const imgSrc = galleryItems[currentIndex].querySelector('img').src;
-    lightboxImg.src = imgSrc;
-  }
+    function updateLightboxImage() {
+      const imgSrc = galleryItems[currentIndex].querySelector('img').src;
+      lightboxImg.src = imgSrc;
+    }
 
-  // Background music play/pause toggle
-  document.addEventListener('DOMContentLoaded', () => {
+    // Slideshow functionality
+    const slideshow = document.querySelector('.slideshow');
+    const slideshowImg = slideshow.querySelector('img');
+    const slideshowCaption = slideshow.querySelector('.slideshow-caption');
+    const slideshowClose = document.querySelector('.slideshow-close');
+    let slideshowIndex = 0;
+
+    function startSlideshow() {
+      slideshow.classList.add('active');
+      showNextSlide();
+    }
+
+    function showNextSlide() {
+      if (slideshowIndex >= galleryItems.length) {
+        slideshow.classList.remove('active');
+        return;
+      }
+
+      const imgSrc = galleryItems[slideshowIndex].querySelector('img').src;
+      const caption = galleryItems[slideshowIndex].getAttribute('data-caption');
+
+      slideshowImg.src = imgSrc;
+      slideshowCaption.textContent = caption;
+
+      slideshowImg.classList.add('active');
+      slideshowCaption.classList.add('active');
+
+      setTimeout(() => {
+        slideshowImg.classList.remove('active');
+        slideshowCaption.classList.remove('active');
+        slideshowIndex++;
+        showNextSlide();
+      }, 3000); // 3 seconds per slide
+    }
+
+    slideshowClose.addEventListener('click', () => {
+      slideshow.classList.remove('active');
+    });
+
+    // Start slideshow on page load
+    window.addEventListener('load', startSlideshow);
+
+    // Background music play/pause toggle
     const music = document.getElementById('background-music');
     document.addEventListener('click', () => {
       if (music.paused) {
         music.play();
       }
-    }, { once: true });
-  });
-</script>
+    });
+
+    // Automatically simulate a click to activate background music
+    document.addEventListener('DOMContentLoaded', () => {
+      const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+      document.body.dispatchEvent(clickEvent);
+    });
+  </script>
 </body>
 </html>
