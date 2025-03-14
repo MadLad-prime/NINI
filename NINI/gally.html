@@ -290,113 +290,58 @@
   </footer>
 
   <!-- Background Music -->
-  <audio id="background-music" autoplay loop>
-     https://github.com/MadLad-prime/NINI/raw/main/NINI/sing2_nn.mp3
+<audio id="background-music" autoplay loop>
+    <source src="https://github.com/MadLad-prime/NINI/raw/main/NINI/song2_nn.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
-  </audio>
+</audio>
 
-  <script>
-    // Lightbox functionality
-    const lightbox = document.querySelector('.lightbox');
-    const lightboxImg = lightbox.querySelector('img');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const lightboxClose = document.querySelector('.lightbox-close');
-    const lightboxPrev = document.querySelector('.lightbox-prev');
-    const lightboxNext = document.querySelector('.lightbox-next');
+<script>
+  // Lightbox functionality
+  const lightbox = document.querySelector('.lightbox');
+  const lightboxImg = lightbox.querySelector('img');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const lightboxClose = document.querySelector('.lightbox-close');
+  const lightboxPrev = document.querySelector('.lightbox-prev');
+  const lightboxNext = document.querySelector('.lightbox-next');
 
-    let currentIndex = 0;
+  let currentIndex = 0;
 
-    galleryItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            currentIndex = index;
-            updateLightboxImage();
-            lightbox.style.display = 'flex';
-        });
+  galleryItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      currentIndex = index;
+      updateLightboxImage();
+      lightbox.style.display = 'flex';
     });
+  });
 
-    lightboxClose.addEventListener('click', () => {
-        lightbox.style.display = 'none';
-    });
+  lightboxClose.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+  });
 
-    lightboxPrev.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-        updateLightboxImage();
-    });
+  lightboxPrev.addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    updateLightboxImage();
+  });
 
-    lightboxNext.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % galleryItems.length;
-        updateLightboxImage();
-    });
+  lightboxNext.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % galleryItems.length;
+    updateLightboxImage();
+  });
 
-    function updateLightboxImage() {
-        const imgSrc = galleryItems[currentIndex].querySelector('img').src;
-        lightboxImg.src = imgSrc;
-    }
+  function updateLightboxImage() {
+    const imgSrc = galleryItems[currentIndex].querySelector('img').src;
+    lightboxImg.src = imgSrc;
+  }
 
-    // Slideshow functionality
-    const slideshow = document.querySelector('.slideshow');
-    const slideshowImg = slideshow.querySelector('img');
-    const slideshowCaption = slideshow.querySelector('.slideshow-caption');
-    const slideshowClose = document.querySelector('.slideshow-close');
-    let slideshowIndex = 0;
-
-    function startSlideshow() {
-        slideshow.classList.add('active');
-        showNextSlide();
-    }
-
-    function showNextSlide() {
-        if (slideshowIndex >= galleryItems.length) {
-            slideshow.classList.remove('active');
-            return;
-        }
-
-        const imgSrc = galleryItems[slideshowIndex].querySelector('img').src;
-        const caption = galleryItems[slideshowIndex].getAttribute('data-caption');
-
-        slideshowImg.src = imgSrc;
-        slideshowCaption.textContent = caption;
-
-        slideshowImg.classList.add('active');
-        slideshowCaption.classList.add('active');
-
-        setTimeout(() => {
-            slideshowImg.classList.remove('active');
-            slideshowCaption.classList.remove('active');
-            slideshowIndex++;
-            showNextSlide();
-        }, 4000); // 4 seconds per slide
-    }
-
-    slideshowClose.addEventListener('click', () => {
-        slideshow.classList.remove('active');
-    });
-
-    // Start slideshow on page load
-    window.addEventListener('load', startSlideshow);
-
-    // Background music functionality
+  // Background music play/pause toggle
+  document.addEventListener('DOMContentLoaded', () => {
     const music = document.getElementById('background-music');
-
-    function forcePlayMusic() {
-        music.play().catch(error => {
-            console.error("Failed to play music:", error);
-        });
-    }
-
-    // Simulate a user interaction to bypass autoplay policies
-    function simulateUserInteraction() {
-        document.body.click(); // Simulate a click on the body
-    }
-
-    // Play music when the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', () => {
-        simulateUserInteraction(); // Simulate interaction to allow autoplay
-        forcePlayMusic(); // Force the music to play
-    });
-
-    // Play music on any user interaction (e.g., click)
-    document.addEventListener('click', forcePlayMusic);
-  </script>
+    document.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+      }
+    }, { once: true });
+  });
+</script>
 </body>
 </html>
