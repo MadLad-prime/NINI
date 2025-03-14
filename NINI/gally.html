@@ -357,30 +357,30 @@
     let currentIndex = 0;
 
     galleryItems.forEach((item, index) => {
-      item.addEventListener('click', () => {
-        currentIndex = index;
-        updateLightboxImage();
-        lightbox.style.display = 'flex';
-      });
+        item.addEventListener('click', () => {
+            currentIndex = index;
+            updateLightboxImage();
+            lightbox.style.display = 'flex';
+        });
     });
 
     lightboxClose.addEventListener('click', () => {
-      lightbox.style.display = 'none';
+        lightbox.style.display = 'none';
     });
 
     lightboxPrev.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-      updateLightboxImage();
+        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+        updateLightboxImage();
     });
 
     lightboxNext.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % galleryItems.length;
-      updateLightboxImage();
+        currentIndex = (currentIndex + 1) % galleryItems.length;
+        updateLightboxImage();
     });
 
     function updateLightboxImage() {
-      const imgSrc = galleryItems[currentIndex].querySelector('img').src;
-      lightboxImg.src = imgSrc;
+        const imgSrc = galleryItems[currentIndex].querySelector('img').src;
+        lightboxImg.src = imgSrc;
     }
 
     // Slideshow functionality
@@ -391,52 +391,54 @@
     let slideshowIndex = 0;
 
     function startSlideshow() {
-      slideshow.classList.add('active');
-      showNextSlide();
+        slideshow.classList.add('active');
+        showNextSlide();
     }
 
     function showNextSlide() {
-      if (slideshowIndex >= galleryItems.length) {
-        slideshow.classList.remove('active');
-        return;
-      }
+        if (slideshowIndex >= galleryItems.length) {
+            slideshow.classList.remove('active');
+            return;
+        }
 
-      const imgSrc = galleryItems[slideshowIndex].querySelector('img').src;
-      const caption = galleryItems[slideshowIndex].getAttribute('data-caption');
+        const imgSrc = galleryItems[slideshowIndex].querySelector('img').src;
+        const caption = galleryItems[slideshowIndex].getAttribute('data-caption');
 
-      slideshowImg.src = imgSrc;
-      slideshowCaption.textContent = caption;
+        slideshowImg.src = imgSrc;
+        slideshowCaption.textContent = caption;
 
-      slideshowImg.classList.add('active');
-      slideshowCaption.classList.add('active');
+        slideshowImg.classList.add('active');
+        slideshowCaption.classList.add('active');
 
-      setTimeout(() => {
-        slideshowImg.classList.remove('active');
-        slideshowCaption.classList.remove('active');
-        slideshowIndex++;
-        showNextSlide();
-      }, 4000); // 3 seconds per slide
+        setTimeout(() => {
+            slideshowImg.classList.remove('active');
+            slideshowCaption.classList.remove('active');
+            slideshowIndex++;
+            showNextSlide();
+        }, 4000); // 4 seconds per slide
     }
 
     slideshowClose.addEventListener('click', () => {
-      slideshow.classList.remove('active');
+        slideshow.classList.remove('active');
     });
 
     // Start slideshow on page load
     window.addEventListener('load', startSlideshow);
 
+    // Background music functionality
     const music = document.getElementById('background-music');
 
-function forcePlayMusic() {
-    music.play().catch(error => {
-        console.error("Failed to play music:", error);
-    });
-}
+    function forcePlayMusic() {
+        music.play().catch(error => {
+            console.error("Failed to play music:", error);
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', forcePlayMusic);
-document.addEventListener('click', forcePlayMusic);
-      }
-    });
-  </script>
+    // Play music when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', forcePlayMusic);
+
+    // Play music on any user interaction (e.g., click)
+    document.addEventListener('click', forcePlayMusic);
+</script>
 </body>
 </html>
