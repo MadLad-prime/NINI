@@ -316,8 +316,6 @@
       </div>
     </div>
   </section>
-    </div>
-  </section>
 
   <!-- Lightbox -->
   <div class="lightbox">
@@ -339,11 +337,11 @@
     <p>Made with ❤️ by Nuno</p>
   </footer>
 
-   <!-- Background Music (Fixed) -->
-<audio id="background-music" autoplay loop>
+  <!-- Background Music -->
+  <audio id="background-music" loop>
     <source src="../song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
-</audio>
+  </audio>
 
   <script>
     // Lightbox functionality
@@ -425,18 +423,37 @@
     // Start slideshow on page load
     window.addEventListener('load', startSlideshow);
 
-    // Background music play/pause toggle
+    // Background music handling
     const music = document.getElementById('background-music');
+
+    // Automatically play music when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      // Simulate a user interaction to bypass autoplay restrictions
+      const simulateUserInteraction = () => {
+        document.body.click(); // Simulate a click on the body
+      };
+
+      // Try to play the music
+      const playMusic = () => {
+        music.play().then(() => {
+          console.log('Music is playing');
+        }).catch((error) => {
+          console.error('Autoplay failed:', error);
+          // If autoplay fails, prompt the user to interact with the page
+          alert('Please click anywhere on the page to enable background music.');
+        });
+      };
+
+      // Simulate user interaction and play music
+      simulateUserInteraction();
+      playMusic();
+    });
+
+    // Ensure music plays when the user interacts with the page
     document.addEventListener('click', () => {
       if (music.paused) {
         music.play();
       }
-    });
-
-    // Automatically simulate a click to activate background music
-    document.addEventListener('DOMContentLoaded', () => {
-      const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
-      document.body.dispatchEvent(clickEvent);
     });
   </script>
 </body>
