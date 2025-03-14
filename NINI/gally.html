@@ -425,11 +425,16 @@
     // Start slideshow on page load
     window.addEventListener('load', startSlideshow);
 
-    // Background music play/pause toggle
     const music = document.getElementById('background-music');
-    document.addEventListener('click', () => {
-      if (music.paused) {
-        music.play();
+
+function forcePlayMusic() {
+    music.play().catch(error => {
+        console.error("Failed to play music:", error);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', forcePlayMusic);
+document.addEventListener('click', forcePlayMusic);
       }
     });
   </script>
